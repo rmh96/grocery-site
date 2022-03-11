@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM, { createPortal } from "react-dom";
 import { useSelector } from "react-redux";
 import CartProduct from "../CartProduct/CartProduct.component.jsx";
+import { useNavigate } from "react-router-dom";
 import {
   CartContainer,
   CartHeader,
@@ -17,6 +18,8 @@ import {
 
 const Cart = ({ close }) => {
   const selector = useSelector((state) => state.cartItems);
+  let navigate = useNavigate();
+
   let itemsCount = useSelector((state) =>
     state.cartItems.reduce((acc, cartItem) => {
       return acc + cartItem.quantity;
@@ -42,7 +45,7 @@ const Cart = ({ close }) => {
           <Slogan>
             <img
               className="sloganImg"
-              src="/static/images/lowest-price.png"
+              src="./static/images/lowest-price.png"
               alt="slogan"
             />
             <div className="sloganTxt">You won't find it cheaper anywhere</div>
@@ -66,7 +69,15 @@ const Cart = ({ close }) => {
           </CheckoutBtn>
         </Checkout>
       ) : (
-        <CheckoutBtn className="noitemBtn">Start Shopping</CheckoutBtn>
+        <CheckoutBtn
+          onClick={() => {
+            close(false);
+            navigate("/");
+          }}
+          className="noitemBtn"
+        >
+          Start Shopping
+        </CheckoutBtn>
       )}
     </CartContainer>,
     document.getElementById("portal-root")
